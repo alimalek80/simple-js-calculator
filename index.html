@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        .calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 200px;
+            margin: auto;
+        }
+        .calculator button, .calculator input {
+            padding: 20px;
+            font-size: 18px;
+            margin: 2px;
+            text-align: center;
+        }
+        input {
+            grid-column: span 4;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="setOperator('divide')">/</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="setOperator('multiply')">*</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="setOperator('subtract')">-</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="setOperator('add')">+</button>
+    </div>
+
+
+    <script>
+        let currentValue = '';
+        let currentOperator = null;
+        let firstValue = null;
+
+        function appendValue(value){
+            currentValue += value;
+            document.getElementById('display').value = currentValue;
+        }
+
+        function clearDisplay(){
+            currentValue = '';
+            currentOperator = null;
+            firstValue = null;
+            document.getElementById('display').value = '';
+        }
+
+        function setOperator(op){
+            if (currentValue !== '') {
+                if (firstValue === null) {
+                    firstValue = parseFloat(currentValue);
+                } else {
+                    firstValue = calculate();
+                }
+            }
+            currentOperator = op;
+            currentValue = '';
+        }
+
+        function calculate() {
+            if (firstValue !== null && currentValue !== ''){
+                let secondValue = parseFloat(currentValue);
+                switch (currentOperator) {
+                    case 'add':
+                        firstValue += secondValue;
+                        break;
+                    case 'subtract':
+                        firstValue -= secondValue;
+                        break;
+                    case 'multiply':
+                        firstValue *= secondValue;
+                        break;
+                    case 'divide':
+                        firstValue /= secondValue;
+                        break;
+
+                }
+                document.getElementById('display').value = firstValue;
+                currentValue = '';
+                currentOperator = null;
+                return firstValue;
+            }
+        }
+    </script>
+</body>
+</html>
